@@ -1,36 +1,51 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ca">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Socket.IO</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <title>Xat</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
-    
-    <div id="divForm">
-        <form action="" id="formNom" class="">
-            <label for="nom">Nom d'Usuari:</label>
-            <input type="text" name="nom" id="inputNom" maxlength="20">
-            <input type="submit" value="Enviar nom">
-        </form>
 
-        
-    </div>    
+<body class="bg-light">
 
-    <div id="idChat" class="d-none">
-        <p id="nombreUsuario"></p>
+    <div class="container mt-5">
 
-        <div id="idMensaje"></div>
+        <div id="divForm" class="card p-3 mb-3">
+            <h3>💬 Xat</h3>
 
-        <form action="" id="formMensaje">
+            <form id="formNom">
+                <label for="inputNom" class="form-label">Nom d'usuari:</label>
+                <input type="text" name="nom" id="inputNom" class="form-control mb-2" maxlength="20">
+                <button type="submit" class="btn btn-primary">Entrar</button>
+            </form>
+        </div>
 
-            <input type="text" name="textMensaje" id="textMensaje">
-            <input type="submit" value="Enviar Mensaje">
-        </form>
+        <div id="idChat" class="card d-none">
+
+            <div class="card-header bg-primary text-white">
+                <h4>Xat en temps real</h4>
+                <p class="mb-1">Usuari: <span id="nombreUsuario"></span></p>
+                <span id="estatConnexio">Connectant...</span>
+            </div>
+
+            <div id="idChatMensaje" class="card-body overflow-auto" style="height: 300px;">
+            </div>
+
+            <div class="card-footer">
+                <form id="formMensaje" class="d-flex gap-2">
+                    <input type="text" name="textMensaje" id="textMensaje" class="form-control" maxlength="500" placeholder="Escriu un missatge...">
+                    <button type="submit" id="botoEnviar" class="btn btn-primary">Enviar</button>
+                </form>
+            </div>
+
+        </div>
+
     </div>
-</body>
 
-<script src="/socket.io/socket.io.js"></script>
-<script src="funcions.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="funcions.js"></script>
+
+</body>
 </html>

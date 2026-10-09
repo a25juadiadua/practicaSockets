@@ -12,14 +12,14 @@ app.use(express.static('public'));
 
 io.on('connection', (socket)=> {
 
-
-    socket.on('mensaje', (mensaje) => {
+    socket.on('mensaje', (mensaje, nom) => {
 
 
         console.log("Mensaje Recibido", mensaje);
+        console.log("Nombre Recibido", nom);
 
 
-        io.emit('mensaje', mensaje);
+        io.emit('mensaje', mensaje, nom);
     })
 });
 
