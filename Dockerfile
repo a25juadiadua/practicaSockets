@@ -12,4 +12,6 @@ EXPOSE 3000
 
 WORKDIR /app/back
 
-CMD ["node", "server.js"]
+CMD ["nodemon", "server.js"]
+
+RUN npm install -g nodemon
