@@ -6,11 +6,15 @@ let formulariMensaje = document.getElementById("formMensaje");
 let botoDesconectar = document.getElementById("botoDesconectar");
 
 //DESCONECTAR
+function Desconnectar(){
+    socket.disconnect();
+}
+
 socket.on('disconnect', () => {
-    document.getElementById("estatConnexio").textContent = "Desconectado";
-    botoDesconectar.textContent = "Conectar";
-    document.getElementById("botoEnviar").disabled = true;
-    document.getElementById("textMensaje").disable = true;
+document.getElementById("estatConnexio").textContent = "Desconectado";
+botoDesconectar.textContent = "Conectar";
+document.getElementById("botoEnviar").disabled = true;
+document.getElementById("textMensaje").disabled = true;
 });
 
 //CONECTAR
@@ -20,10 +24,10 @@ socket.on('connect', () => {
 
     if(nom){
         socket.emit("chat:login", nom);
+    } else {
+        document.getElementById("botoEnviar").disabled = true;
+        document.getElementById("textMensaje").disabled = true;
     }
-
-    document.getElementById("botoEnviar").disabled = false;
-    document.getElementById("textMensaje").disable = false;
 });
 
 botoDesconectar.addEventListener("click", function() {
@@ -73,12 +77,17 @@ socket.on('chat:message', (mensaje , nomServer, hora, minutos) => {
 
 //FORMULARIO PARA EL NOMBRE
 formulariNom.addEventListener("submit", function(e) {
-    
     e.preventDefault();
 
-    nom = document.getElementById("inputNom").value;
-    
-    socket.emit("chat:login", nom);
+    let nombreInput = document.getElementById("inputNom").value;
+    nom = nombreInput;
+
+    if (socket.connected) {
+        socket.emit("chat:login", nom);
+    } else {
+        socket.connect();
+    }
+
     console.log("Nombre enviado al servidor:", nom);
 });
 
@@ -95,7 +104,9 @@ socket.on('chat:login:ok', (nomServer) => {
     document.getElementById("divForm").classList.add("d-none");
     document.getElementById("idChat").classList.remove("d-none");
     document.getElementById("nombreUsuario").textContent = nom;
-
+    document.getElementById("botoEnviar").disabled = false;
+    document.getElementById("textMensaje").disabled = false;
+    document.getElementById("idVolver").classList.remove("d-none");
     console.log("Nombre de usuario establecido:", nom);
     document.getElementById("textMensaje").focus();
 });
@@ -123,8 +134,14 @@ formulariMensaje.addEventListener("submit", function(e) {
 });
 
 document.getElementById("idVolver").addEventListener("click", function(){
+    
+    localStorage.removeItem("nom");
     nom = null;
-
+    
+    Desconnectar();
+    document.getElementById("inputNom").value = "";
     document.getElementById("divForm").classList.remove("d-none");
+    document.getElementById("idVolver").classList.add("d-none");
     document.getElementById("idChat").classList.add("d-none");
+    document.getElementById("idChatMensaje").textContent = "";
 })

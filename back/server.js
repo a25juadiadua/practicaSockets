@@ -50,8 +50,16 @@ try {
         socket.on('chat:send', (mensaje, nom) => {
 
             const ahora = new Date();
-            const hora = ahora.getHours();
-            const minutos = String(ahora.getMinutes()).padStart(2, "0");
+const hora = new Intl.DateTimeFormat("es-ES", {
+    timeZone: "Europe/Madrid",
+    hour: "2-digit",
+    hourCycle: "h23"
+}).format(ahora);
+
+const minutos = new Intl.DateTimeFormat("es-ES", {
+    timeZone: "Europe/Madrid",
+    minute: "2-digit"
+}).format(ahora);os = String(ahora.getMinutes()).padStart(2, "0");
 
 
             if (typeof nom !== "string" || nom.trim() === "" || nom.length > 20 || nom.trim().length < 3) {
