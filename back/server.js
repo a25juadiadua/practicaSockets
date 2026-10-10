@@ -6,7 +6,11 @@ const app = express();
 
 const server = createServer(app);
 
-const io = new Server(server);
+const io = new Server(server, {
+    connectionStateRecovery: {
+        maxDisconnectionDuration: 2 * 60 * 1000
+    }
+});
 
 app.use(express.static('public'));
 
@@ -59,7 +63,7 @@ const hora = new Intl.DateTimeFormat("es-ES", {
 const minutos = new Intl.DateTimeFormat("es-ES", {
     timeZone: "Europe/Madrid",
     minute: "2-digit"
-}).format(ahora);os = String(ahora.getMinutes()).padStart(2, "0");
+}).format(ahora);
 
 
             if (typeof nom !== "string" || nom.trim() === "" || nom.length > 20 || nom.trim().length < 3) {

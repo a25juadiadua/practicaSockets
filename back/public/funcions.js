@@ -1,4 +1,10 @@
-const socket = io();
+
+const socket = io({
+    reconnectionDelay: 10000,
+    reconnectionDelayMax: 10000,
+    randomizationFactor: 0
+});
+
 let nom = localStorage.getItem("nom");
 
 let formulariNom = document.getElementById("formNom");
@@ -28,6 +34,20 @@ socket.on('connect', () => {
         document.getElementById("botoEnviar").disabled = true;
         document.getElementById("textMensaje").disabled = true;
     }
+
+    console.log(document.getElementById("estatRecuperacio"));
+    
+    let estatRecuperacio = document.getElementById("estatRecuperacio");
+
+if (estatRecuperacio) {
+    if (socket.recovered) {
+    estatRecuperacio.textContent =
+        "S'han recuperat els missatges de la connexió anterior.";
+} else {
+    estatRecuperacio.textContent =
+        "Sessió nova o estat no recuperat.";
+}
+}
 });
 
 botoDesconectar.addEventListener("click", function() {
@@ -144,4 +164,8 @@ document.getElementById("idVolver").addEventListener("click", function(){
     document.getElementById("idVolver").classList.add("d-none");
     document.getElementById("idChat").classList.add("d-none");
     document.getElementById("idChatMensaje").textContent = "";
+})
+
+document.getElementById("botoProva").addEventListener("click", function(){
+    socket.io.engine.close();
 })
